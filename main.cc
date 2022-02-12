@@ -55,7 +55,7 @@ void serialize(std::vector<MyData> indata) {
 }
 
 int main() {
-  cout << "Hello World!" << endl;
+  cout << "Serializer!" << endl;
   std::vector<MyData> data{
       {.x = 0x1234,
        .y = 0x5678,
