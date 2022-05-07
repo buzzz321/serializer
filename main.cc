@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <string.h>
 #include <time.h>
@@ -38,7 +39,7 @@ void serialize(std::vector<MyData> indata) {
     *((uint16_t *)(buffer + offset)) = item.y;
     offset += sizeof(MyData::y);
 
-    *((size_t *)(buffer + offset)) = item.samples.size() * sizeof(uint32_t);
+    *((size_t *)(buffer + offset)) = item.samples.size();
     offset += sizeof(size_t);
 
     for (auto const &sample : item.samples) {
@@ -51,6 +52,13 @@ void serialize(std::vector<MyData> indata) {
   for (size_t index = 0; index < size; index++) {
     cout << std::hex << " 0x" << (uint64_t)buffer[index] << endl;
   }
+
+  ofstream outfile;
+  outfile.open("data.bin", ios::out | ios::binary);
+
+  if (outfile) {
+    outfile.write((char *)buffer, size);
+  }
   delete[] buffer;
 }
 
@@ -60,8 +68,8 @@ int main() {
       {.x = 0x1234,
        .y = 0x5678,
        .samples{0x1234aabb, 0x34ffeeff, 0x5612, 0x7812, 0x9012}},
-      {.x = 0x1234,
-       .y = 0x5678,
+      {.x = 0x12,
+       .y = 0x13,
        .samples{0x12aabbcc, 0x34ddeeff, 0x56, 0x78, 0x90}}};
 
   serialize(data);
